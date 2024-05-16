@@ -1,3 +1,4 @@
 data.json
 .env
 virtualenv
+__pycache__/

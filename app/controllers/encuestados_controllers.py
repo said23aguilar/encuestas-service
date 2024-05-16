@@ -1,11 +1,9 @@
 import os
-from flask import Blueprint, request, jsonify, flash
+from flask import Blueprint, request, jsonify
 import firebase_admin
 from firebase_admin import credentials, firestore, initialize_app
 from datetime import datetime
 from functools import wraps
-import json
-from pywe_decrypt.msg import decrypt
 
 encuestados_blue_print = Blueprint('encuestados',__name__)
 
@@ -19,6 +17,8 @@ if not firebase_admin._apps:
     })
 db = firestore.client()
 sap = db.collection('registro_encuestado')
+
+current_date = datetime.now() 
 
 def check_required_fields(fields):
     def decorator(func):
@@ -64,10 +64,21 @@ def update_encuestado():
 def not_allowed():
     return jsonify(message="No se puede acceder a esta ruta con el metodo GET"), 405    
 
+@encuestados_blue_print.route('/encuestados/list', methods=['GET'])
+def read_encuestados_all():
+    try:
+        predio = request.args.get('predio')    
+        if predio:
+            todo = sap.document(predio).get()
+            return jsonify(response = todo.to_dict()), 200
+        else:
+            all_todos = [doc.to_dict() for doc in sap.stream()]
+            return jsonify(response = all_todos), 200
+    except Exception as e:
+        return jsonify( error = str(e)), 500
 
 @encuestados_blue_print.route('/encuestados/listByPredio', methods=['POST','GET'])
 def read_encuestados():
-    current_date = datetime.now() 
     try:
         predio = request.json.get('predio')    
 
@@ -78,8 +89,8 @@ def read_encuestados():
         
         docs = []
         for doc in collection.stream():   
-            formattedData = doc.to_dict()
-            docs.append(formattedData)
+            formatted_data = doc.to_dict()
+            docs.append(formatted_data)
        
         if len(docs) == 0:
             error = {
@@ -97,4 +108,21 @@ def read_encuestados():
     except Exception as e:
         return jsonify(error = e)
 
-
+@encuestados_blue_print.route('/encuestado/delete', methods=['DELETE'])
+def delete_predio():
+    try:
+        predio = request.args.get('predio')
+        if not predio:
+            error = {
+                "status": 404,
+                "title": "No se puede eliminar el predio",
+                "message": {
+                    "predio": ["El predio no se pudo eliminar"]
+                },
+                "timestamp": current_date
+            }
+            return jsonify( error = error), 404
+        sap.document(predio).delete()
+        return jsonify(response = f'Se elimino el predio: {predio} correctamente'), 200
+    except Exception as e:
+        return jsonify( error = str(e))
