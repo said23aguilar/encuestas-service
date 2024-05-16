@@ -4,10 +4,11 @@ from firebase_admin import credentials, firestore, initialize_app
 from datetime import datetime
 from models.predios_models import Predios
 
-service_account = os.environ.get('SERVICE_ACCOUNT')
 
 predio_blue_print = Blueprint('app',__name__)
 
+
+service_account = os.environ.get('SERVICE_ACCOUNT')
 cred = credentials.Certificate(service_account)
 default_app = initialize_app(cred, {
     'databaseURL': 'https://datos.firebaseio.com'

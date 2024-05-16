@@ -12,4 +12,4 @@ app.register_blueprint(encuestados_blue_print)
 port = int(os.environ.get('PORT', 8080))
 
 if __name__ == '__main__':
-    app.run(threaded=True, host='0.0.0.0', debug=True, port=port)
+    app.run(threaded=True, host='0.0.0.0', port=port)
