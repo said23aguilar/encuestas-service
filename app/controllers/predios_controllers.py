@@ -10,7 +10,7 @@ load_dotenv()
 predio_blue_print = Blueprint('app',__name__)
 
 
-service_account = os.getenv('SERVICE_ACCOUNT')
+service_account= os.environ.get('SERVICE_ACCOUNT')
 
 cred = credentials.Certificate(service_account)
 default_app = initialize_app(cred, {

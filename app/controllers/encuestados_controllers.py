@@ -10,7 +10,7 @@ load_dotenv()
 
 encuestados_blue_print = Blueprint('encuestados',__name__)
 
-service_account= os.getenv('SERVICE_ACCOUNT')
+service_account= os.environ.get('SERVICE_ACCOUNT')
 
 
 if not firebase_admin._apps:
