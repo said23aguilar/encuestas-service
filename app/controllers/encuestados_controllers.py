@@ -39,12 +39,9 @@ def check_required_fields(fields):
 
 @encuestados_blue_print.route('/encuestados/register', methods=['POST'])
 @check_required_fields([
-        'clave', 'predio', 'propietario', 'domicilio', 'colonia', 'ref_ubicacion', 'toma_agua',
-    'numero_tomas', 'ubicacion_toma', 'medidor', 'nom_medidor', 'ubicacion_medidor',
-    'estado_medidor', 'referencia_ubicacion_medidor', 'estado_toma', 'drenaje', 
-    'num_descargas', 'registro', 'ubicacion_registro', 'no_personas',
-    'cisterna', 'capacidad_cisterna', 'uso_cisterna', 'tinaco', 'capacidad_tinaco',
-    'uso_tinaco', 'servicio_domestico', 'servicio_comercial', 'servicio_industrial',
+    'clave', 'predio', 'propietario', 'domicilio', 'colonia', 'ref_ubicacion', 'toma_agua',
+    'estado_toma', 'drenaje', 'num_descargas', 'registro', 'no_personas',
+    'cisterna', 'tinaco', 'servicio_domestico', 'servicio_comercial', 'servicio_industrial',
     'giro', 'estado_vivienda', 'comentario_generales', 'quien_proporciona_informacion',
     'encuestadores'
     ])
